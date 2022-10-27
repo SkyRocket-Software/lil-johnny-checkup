@@ -1,0 +1,10 @@
+# Add a Caddyfile with the contents you find here
+# Use this one for reference.
+
+# Add the domains you want here.
+example.com
+localhost
+
+
+# Leave the rest as-is
+reverse_proxy http://johnny_checkup:8000
