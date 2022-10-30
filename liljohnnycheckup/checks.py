@@ -88,7 +88,13 @@ def get_cert_expires_at(hostname, timeout, port):
 
 
 def get_cert_is_valid(hostname, days=7, timeout=5.0, port=443):
-    expires = get_cert_expires_at(hostname, timeout, port)
-    remaining = expires - datetime.utcnow()
-    is_valid = remaining.days > 0
-    return is_valid, remaining.days
+    try:
+        expires = get_cert_expires_at(hostname, timeout, port)
+    except Exception as e:
+        logger.error(f'Encountered error while verifying hostname: {hostname}')
+        return False, 0
+        is_valid = False
+    else:
+        remaining = expires - datetime.utcnow()
+        is_valid = remaining.days > 0
+        return is_valid, remaining.days

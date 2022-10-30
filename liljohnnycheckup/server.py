@@ -54,7 +54,7 @@ def checkup(
         logger.debug(f'Attempting to verify certificate for {url}')
         url_parts = urlparse(url)
         has_valid_cert, cert_expires_in = checks.get_cert_is_valid(
-            url_parts.netloc,
+            url_parts.hostname,
             days=check.certificate_expiry_days,
             timeout=check.certificate_check_timeout,
             port=check.certificate_check_port,

@@ -12,16 +12,16 @@ RUN (. checkup/bin/activate)
 # Cache the requirements
 COPY requirements.txt .
 RUN (pip install -r requirements.txt)
+RUN (pip install gunicorn)
 
 # App setup
 COPY . .
 
 # Production Setup
-CMD uvicorn liljohnnycheckup:app  \
+CMD gunicorn liljohnnycheckup:app \
+    --worker-class uvicorn.workers.UvicornWorker \
     --workers 4 \
-    --no-server-header \
-    --limit-max-requests 2000 \
-    --backlog 1000 \
-    --host 0.0.0.0 \
-    --port 8000
-
+    --worker-connections=100 \
+    --backlog=1000 \
+    -p liljohnnycheckup.pid \
+    --bind=0.0.0.0:8000
